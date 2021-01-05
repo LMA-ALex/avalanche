@@ -1,29 +1,29 @@
 #create namespace avalanche
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: avalanche
-spec:
-  finalizers:
-  - kubernetes
----
+#apiVersion: v1
+#kind: Namespace
+#metadata:
+#  name: avalanche
+#spec:
+#  finalizers:
+#  - kubernetes
+#---
 #create deployment avalanche
 apiVersion: apps/v1 
 kind: Deployment
 metadata:
-  name: avalanche
-  namespace: avalanche
+  name: metrics-gen
+  namespace: monitoring
   labels:
-    name: avalanche
+    name: monitoring-metrics-gen
 spec:
   selector:
     matchLabels:
-      app: avalanche
+      app: monitoring-metrics-gen
   replicas: 1 # tells deployment to run 1 pods matching the template
   template:
     metadata:
       labels:
-        app: avalanche
+        app: monitoring-metrics-gen
     spec:
       containers:
       - name: pg-avalanche
@@ -39,10 +39,10 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: avalanche-svc
-  namespace: avalanche
+  name: metrics-gen-svc
+  namespace: monitoring
   labels:
-    app: avalanche
+    app: monitoring-metrics-gen
 spec:
   ports:
     # the port that this service should serve on
@@ -53,4 +53,4 @@ spec:
   clusterIP: None
   # label keys and values that must match in order to receive traffic for this service
   selector:
-    app: avalanche
+    app: monitoring-metrics-gen
